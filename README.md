@@ -1,18 +1,51 @@
 # OTIF---Time-to-Ready
 
-Analytics of the time_to_ready status (time to order approval, hereafter referred to as time to approval). Its patterns, dependencies and impact on data, OTIF and delivery date.
+## 📊 Research on the time of order co-ordination (`time_to_ready`)
 
-The time of order coordination between the supplier and the customer is considered.
-In this study, the dependencies of time to order reconciliation will be reflected. 
-It will consider:
-1. Its distribution
-2. A simple clustering of status according to the order dwell time is performed
-3. Hypotheses considered:
-‘as time_to_ready increases, the late_% (percentage of late orders within the cluster) increases’
-"The medians of time_to_ready differ for at least one day of the week. There is at least one day of the week for which the median time_to_ready is statistically significantly different from other days."
-using statistical tests
-4. Performed automatic search for ‘bad exceptions’ for dataset fiches. In particular, the following are marked as statistically bad: Distribution centres, Customers, Customer catalogues, Legal entities. 
-It will be possible to automatically cut off (limit) the lines where time_to_ready is less than a certain value in days.
-5. Time_to_ready significance threshold will be found and a visual graph will be implemented.
-6. A machine learning model "catboost" will be used and using DummyRegressor (baseline for comparison) and SHAP to identify the significant features that the model focuses on when predicting the time_to_ready status
-7. The conclusions of the study are written
+## 🎯 Purpose of the study
+
+To investigate the metric `time_to_ready` (time to order reconciliation between customer and supplier), identify its patterns, dependencies and impact on key metrics: OTIF, share of overdue orders (`late_%`) and delivery times.
+
+---
+
+## 📏 Metric Description
+
+`time_to_ready` is the time (in days) from order creation to supplier approval.  
+This is a critical step in the supply chain, affecting further operations: shipment planning, delivery dates, order fulfilment on time.
+
+---
+
+## 🧭 Approach
+
+- Analysis of `time_to_ready` distribution
+- Clustering of orders by processing time
+- Hypothesis testing of relationships with other metrics
+- Automatic search for anomalous objects:
+  - Distribution Centres
+  - Customers
+  - Customer Catalogues
+  - Legal Entities
+- Dependency visualisation
+- Predictive model building using **CatBoost**, interpretation via **SHAP**
+
+---
+
+## 🧪 Hypotheses
+
+1. ** As `time_to_ready` increases, `late_%` within a cluster grows.** 
+ ✅ Tested using χ² test for trends.
+
+2. **Median `time_to_ready` varies for at least one day of the week.** 
+ ✅ Checked using the Kraskell-Wallis test.
+
+---
+
+## 🔍 Results
+
+- A **statistically significant relationship** was found between approval times and the proportion of delinquencies (`late_%`).
+- Identified **days of the week** where approval times are systematically higher/lower.
+- Created automated scripts to find ‘bad’ groups (RAs, customers, etc.) with high `time_to_ready`.
+- Built **CatBoostRegressor** model to predict `time_to_ready`, finding key influencers via **SHAP values**.
+- Found the `time_to_ready` significance threshold at which the risk of order delay increases significantly.
+
+---
